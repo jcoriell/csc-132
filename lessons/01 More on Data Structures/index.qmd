@@ -281,12 +281,414 @@ The difference operation can be thought of as a subtraction of the set `b` from 
 
 ## Dictionaries
 
+A dictionary is perhaps one of the most powerful data structures at our disposal in Python. As you have seen, sequences (like lists) are indexed by a range of numbers (i.e., the first element is placed at index 0, the second element is placed at index 1, and so on).
+
+Definition: A dictionary is a data structure whose elements are indexed by unique keys. A key is just an unchangeable value. The elements are known as values, and are associated with the keys. That is, a single key maps to a single value. This is why we often say that dictionaries contain key-value pairs.
+
+Technically, a list pairs an index (which could be called a key) with a value (the element at that index). The difference is that dictionaries permit keys to be of almost any type, so long as a key is not susceptible to change. That is, it must be immutable. For example, the integer 5, the floating point number 3.14, the string “Jones”, and the character '%' are all valid keys. Note that all keys in a single dictionary must be unique (i.e., there can be no duplicate keys).
+
+Consider a dictionary that you are familiar with: the kind that you lookup the definitions of words in. Using such a dictionary typically involves searching for some word in order to obtain its definition. In such a dictionary, the word is the key, and its definition is the value associated with that key. You should have noticed that, to search a dictionary, the key is required. The unknown is the value that is associated with the key (a definition). In some programming languages, this type of data structure is known as an associative array.
+
+Another dictionary data structure that you are probably familiar with is a phone book (although you've probably only used some online version and not an actual book). What are the keys in a phone book? What about the values? Clearly, a name is the key (e.g., Bob Jones). The values associated with the keys are records that contain an address and a phone number. Certainly, such records can be represented as long strings (perhaps even with newlines). But we may also wish to represent the records as objects of some PersonInfo class!
+
+Dictionaries are created similarly to sets (using braces). The difference is that key-value pairs are specified in the format key: value. Here's an example of a dictionary with strings representing last names as the keys and integers representing office numbers as the values:
+
+```python
+offices = { "Jones": 247, "Smith": 121, "Kennedy": 108 } 
+```
+
+This creates a dictionary with the following key-value pairs (in no particular order):
+
+|Last Name | Office Number |
+|:--- |:--- |
+|Jones |247 |
+|Smith|121|
+|Kennedy|108|
+
+The main operations associated with a dictionary are to store some key-value pair and to retrieve a value associated with a key. Adding the new key-value pair "Wilkerson": 355, for example, can be added to the dictionary above as follows:
+
+```python
+offices["Wilkerson"] = 355
+```
+
+The dictionary now has the following key-value pairs (in no particular order):
+
+|Last Name | Office Number |
+|:--- |:--- |
+|Jones |247 |
+|Smith|121|
+|Kennedy|108|
+|Wilkerson|355|
+
+Retrieving a value matching the key "Smith", for example, can be done as follows: 
+
+```python
+loc = offices["Smith"]
+```
+
+The value of the variable loc is therefore 121. Note that attempting to retrieve a value using a key that is not in the dictionary results in an error.
+
+An existing key-value pair in the dictionary may be overwritten by simply inserting a new value with the same key. For example, suppose that Kennedy changed offices (to, say, 111). The dictionary can be updated as follows:
+
+```python
+offices["Kennedy"] = 111
+```
+
+The dictionary now has the following key-value pairs (in no particular order):
+
+|Last Name | Office Number |
+|:--- |:--- |
+|Jones |247 |
+|Smith|121|
+|Kennedy|111|
+|Wilkerson|355|
+
+A key-value pair can be removed from the dictionary using the del keyword as follows: 
+
+```python
+del offices["Smith"]
+```
+
+The dictionary now has the following key-value pairs (in no particular order):
+
+|Last Name | Office Number |
+|:--- |:--- |
+|Jones |247 |
+|Kennedy|111|
+|Wilkerson|355|
+
+Determining if a key is in the dictionary without actually returning the value associated with the key can be done by using the keyword in as follows:
+
+```python
+"Kennedy" in offices # true
+"Smith" in offices # false (since it was just removed)
+```
+
+```python
+if ("Smith" in offices):
+    ...
+```
+
+The keys and values in a dictionary don't have to be homogeneous; that is, they can each be of different types. For instance, the following key-value pair could be added to the dictionary:
+
+```python
+offices[12345] = "abracadabra"
+```
+
+Although it doesn't necessarily make sense, the dictionary now has the following key-value pairs (in no
+particular order):
+
+|Last Name | Office Number |
+|:--- |:--- |
+|Jones |247 |
+|Kennedy|111|
+|Wilkerson|355|
+|12345|abracadabra|
+
+A neat way to obtain a list of all of the keys in a dictionary is to use the keys function as follows: 
+
+```python
+office_keys = list(offices.keys())
+```
+
+The keys function returns a “view” object that can be converted into a list by using the list constructor (similar to how we used it for the filter and map functions). The variable office_keys above then has the following value:
+
+```python
+['Jones', 12345, 'Wilkerson', 'Kennedy']
+```
+
+There are several ways of iterating through the values of a dictionary. One uses the keys function just described. This can be accomplished as follows:
+
+```python
+for k in offices.keys():
+    print(offices[k])
+```
+
+Note that we don’t need to convert the keys into a list if we are simply iterating through them. Of course, we can convert it to a list if we wanted to, but in the context above it isn’t necessary.
+The output of this snippet of Python code is:
+
+```default
+247
+abracadabra
+355
+111
+```
+
+Of course, to produce a key-value pair mapping, only a small modification is required:
+
+```python
+for k in offices.keys():
+    print(k, "->", offices[k])
+```
+
+The output of this now includes both the keys and values:
+
+```default
+Jones -> 247
+12345 -> abracadabra
+Wilkerson -> 355
+Kennedy -> 111
+```
+
+Another way that Python provides to do the same thing and which produces the same output is to use the dictionary method items as follows:
+
+```python
+for k, v in offices.items():
+    print(k, "->", v)
+```
+
+The items function returns a view object that contains pairs of values, each of which is a key-value pair in the dictionary.
+
+Note that k and v are used to stand for key and value. Any variable name will do (as long as it is descriptive) but these are normally used by convention with dictionaries. Using key and value (or val) as opposed to k and v would also be perfectly fine.
+
 ## Dictionary Comprehensions
+
+Just as with lists, comprehensions can be used to create dictionaries. Of course, these are known as dictionary comprehensions. Here's one that creates a dictionary with the key-value pairs such that the values are cubes of the keys, and the keys range from 1 through 5:
+
+```python
+dict = {x: x ** 3 for x in range(1, 6)}
+```
+
+The created dictionary dict is therefore {1: 1, 2: 8, 3: 27, 4: 64, 5: 125}. The key- value pairs are specified in the dictionary comprehension as x: x**3 (i.e., a key is some value x, and its associated value is x cubed). The range for the values (1 through 5) taken on by the variable x is specified as for x in range(1, 6).
+
+In the space below, try to modify the dictionary comprehension above so that the values are stored as strings instead of integers:
+
+[ref: blank square for students]
 
 ## Activity: Room Adventure...Reloaded
 
+In this activity, we will update the Room Adventure game that was designed in a previous RPi activity. The goal will be to replace the parallel arrays in the game with dictionaries. Such a substitution makes sense because parallel arrays associate (or map) the elements of two or more arrays by index value.
+
+That is, the first element of one array is paired with the first element of another, and so on. Dictionaries are perfectly suited for this because they associate one value with another!
+
+Recall that parallel arrays were used to represent the following relationships:
+(1) Exits with exit locations (through the lists exits and exitLocations); and
+(2) Items with item descriptions (through the lists items and itemDescriptions).
+
+Exits were strings like “north” and “west”, and exit locations were rooms (instances of the class Room). Items were strings like “table” and “fireplace”, and item descriptions were strings like “It is made of oak. A golden key rests on it.” and “It is full of ashes.”
+
+Very quickly, we see that we can replace the lists exits and exitLocations with a single dictionary (perhaps just called exits). Suppose, for example, that an exit to the east led to some instance of a room represented by the variable r2, and an exit to the north led to some instance of a room represented by the variable r3. A dictionary that represents this could be created as follows:
+
+```python
+exits = {"east": r2, "north": r3} 
+```
+
+Of course, this supposes that the variables r2 and r3 exist.
+
+**Step 1: Replace the parallel lists with dictionaries**
+
+The first thing to do to modify our game is to remove the parallel arrays for both exits and items, and replace them with dictionaries. This must be done in the constructor of the Room class; specifically, in lines 16 through 19:
+
+```default
+14: def __init__(self, name): 
+15:     self.name = name
+16:     self.exits = []
+17:     self.exitLocations = []
+18:     self.items = []
+19:     self.itemDescriptions = []
+20:     self.grabbables = []
+```
+
+A few notes: (1) line numbers specified in this activity are valid only within the existing source code (i.e., not the one that is being modified because changes may invalidate the line numbers); and (2) some comments in the source code have been removed in this activity for brevity. The statements on lines 16 through 19 are the parallel arrays that will need to be replaced with dictionaries. The lists exits and exitLocations are paired; so are the lists items and itemDescriptions. Let's replace them with two dictionaries instead:
+
+```default
+def __init__(self, name): 
+    self.name = name
+    self.exits = {}
+    self.items = {}
+    self.grabbables = []
+```
+
+The highlighted statements are the two new dictionaries. There is no longer a need for matching lists since the dictionaries intrinsically match keys to values! Pay attention to the braces (as opposed to brackets).
+
+**Step 2: Remove the accessors and mutators for the deleted parallel lists**
+
+Recall that accessors and mutators were implemented for each of a Room's instance variables. Since the lists exitLocations and itemDescriptions were removed, their respective accessors and mutators must also be removed. The existing accessors and mutators for the instance variables exits and items remain unchanged. In fact, they will work seamlessly with the new dictionaries.
+
+The accessor and mutator for the old instance variable exitLocations are located on lines 39 through 45, and must be removed from the source code:
+
+```default
+39: @property
+40: def exitLocations(self):
+41:     return self._exitLocations 
+42:
+43: @exitLocations.setter
+44: def exitLocations(self, value): 
+45:     self._exitLocations = value
+```
+
+The accessor and mutator for the old instance variable itemDescriptions are located on lines 55 through 61, and must also be removed from the source code:
+
+```default
+55: @property
+56: def itemDescriptions(self):
+57:     return self._itemDescriptions
+58:
+59: @itemDescriptions.setter
+60: def itemDescriptions(self, value):
+61:     self._itemDescriptions = value
+```
+
+**Step 3: Modify the addExit and addItem functions**
+
+The next step is to change the addExit and addItem functions in the Room class so that they appropriately insert new exits and items into dictionaries instead of parallel lists as is currently done. First, let's change the addExit function, which begins on line 74:
+
+```default
+74: def addExit(self, exit, room):
+75:     # append the exit and room to the appropriate lists 
+76:     self._exits.append(exit)
+77:     self._exitLocations.append(room)
+```
+
+Note how the function currently appends the exit to one list and the room to another. Let's change this so that the exit and room are added as a key-value pair to the appropriate dictionary:
+
+```default
+def addExit(self, exit, room):
+    # append the exit and room to the appropriate dictionary
+    self._exits[exit] = room
+```
+
+Now, let's change the addItem function, which begins on line 82:
+
+```default
+82: def addItem(self, item, desc):
+83:     # append the item and description to the appropriate lists
+84:     self._items.append(item)
+85:     self._itemDescriptions.append(desc)
+```
+
+This function is similar to the old addExit function. It appends the item to one list and the description to another. Let's change this so that the item and description are added as a key-value pair to the appropriate dictionary:
+
+```default
+def addItem(self, item, desc):
+    # append the item and description to the appropriate dictionary
+    self._items[item] = desc
+```
+
+**Step 4: Modify the __str__ function**
+
+In the game, the player is continually presented with the status: location, items, exits, and inventory. This is specified in the Room class and specifically involves the bit of source code that generates the string representation of a Room. This is done in the `__str__` function, which begins on line 100:
+
+```default
+100: def __str__(self):
+101:     # first, the room name
+102:     s = "You are in {}.\n".format(self.name)
+103:
+104:     # next, the items in the room
+105:     s += "You see: "
+106:     for item in self.items:
+107:         s += item + " "
+108:     s += "\n"
+109:
+110:     # next, the exits from the room
+111:     s += "Exits: "
+112:     for exit in self.exits:
+113:         s += exit + " "
+114:
+115:     return s
+```
+
+The statements that need to be changed are on lines 106 and 112. In their current form, they iterate through the two lists. The list items used to contain the items (e.g., table). Since items is now a dictionary (with the items as keys and item descriptions as values), then we must iterate through its keys! This can be done by replacing line 106 with the following statement:
+
+for item in self.items.keys():
+
+Similarly, The list exits used to contain the exits (e.g., south). Since exits is now a dictionary
+(with the exits as keys and room objects as values), then we must also iterate through its keys. This can be done by replacing line 112 with the following statement:
+
+for exit in self.exits.keys():
+
+**Step 5: Modify the main part of the program**
+
+There are two places that need modification in the main part of the program. Both are required because the current source code refers to the old lists that have been replaced by dictionaries. The first modification occurs in the part of the source code that is executed if the verb in the action specified by the player is go (e.g., “go south”). This part of the source code begins on line 247. Note that some of the next part of the if statement is provided for clarity:
+
+```default
+247: if (verb == "go"):
+248:     # set a default response
+249:     response = "Invalid exit."
+250:
+251:     # check for valid exits in the current room
+252:     for i in range(len(currentRoom.exits)):
+253:         # a valid exit is found
+254:         if (noun == currentRoom.exits[i]):
+255:             # change the current room to the one ...
+256:             currentRoom = currentRoom.exitLocations[i]
+257:             # set the response (success)
+258:             response = "Room changed."
+259:             # no need to check any more exits
+260:             break
+261: # the verb is: look 
+262: elif (verb == "look"): 
+263: ...
+```
+
+Currently, the algorithm iterates through the list of exits. If one matches the noun specified by the player, then the current room is changed to the matching exit location (in the parallel list). If this occurs, the break statement exits the loop (i.e., we don't need to check for more exits since a valid one has already been found). The changes required affect the highlighted lines in the snippet of source code above. Ultimately, the part of the if statement that is executed if the verb is go should be changed to the following source code. Again, some of the next part of the if statement is provided for clarity:
+
+```default
+# the verb is: go 
+if (verb == "go"):
+    # set a default response
+    response = "Invalid exit."
+    
+    # check for valid exits in the current room
+    if (noun in currentRoom.exits):
+        # if one is found, change the current room ... 
+        currentRoom = currentRoom.exits[noun]
+        # set the response (success)
+        response = "Room changed."
+
+# the verb is: look 
+elif (verb == "look"):
+    ...
+```
+
+Note that no break statement is required because there is no enclosing loop! The second modification occurs in the part of the source code that is executed if the verb in the action specified by the player is look (e.g., “look table”). This part of the source code begins on line 261. Again, some of the next part of the if statement is provided for clarity:
+
+```default
+261: # the verb is: look
+262: elif (verb == "look"):
+263:     # set a default response
+264:     response = "I don't see that item."
+265:
+266:     
+267:     for i in range(len(currentRoom.items)):
+268:         # a valid item is found   
+269:         if  (noun == currentRoom.items[i]):
+270:             # set the response to the item's description
+271:             response = currentRoom.itemDescriptions[i]
+272:             # no need to check any more items
+273:             break
+274: # the verb is: take 
+275: elif (verb == "take"):
+```
+
+As before, the algorithm iterates through a list (of items in this case). If one matches the noun specified by the player, then the response is changed to the matching item description (in the parallel list). If this occurs, the break statement exits the loop (i.e., we don't need to check for more items since a valid one has already been found). The changes required affect the highlighted lines in the snippet of source code above. Ultimately, the part of the if statement that is executed if the verb is look should be changed to the following source code. Again, some of the next part of the if statement is provided for clarity:
+
+```default
+# the verb is: look 
+elif (verb == "look"):
+    # set a default response
+    response = "I don't see that item."
+    # check for valid items in the current room
+    if (noun in currentRoom.items):
+        # if one is found, set the response to the ... 
+        response = currentRoom.items[noun]
+
+# the verb is: take 
+elif (verb == "take"):
+```
+
+And that's it!
 
 ## Wrapping Up Data Structures
 
 By now, you should have a good idea of the need for data structures. Generally, programs that solve problems store and manipulate data in some way. Data structures make this possible. In this curriculum, various useful data structures were introduced. Here is a table that summarizes them:
 
+| Data structure            | Description   |
+|:---                       |:----------    |
+|Array                      |Similar pieces of data store in contiguous memory locations. Data values (elements) are stored at index locations. The size of an array must be known before using one.|
+|Linked list                |Similar pieces of data stored in nodes located in various memory locations. Nodes store data values and a link to the next node in memory. The list has a head (the first element) and a tail (the last element). The size of a linked list can grow or shrink as needed.|
+|Stack                      |A list-like structure where inserting and deleting is performed at one end (usually called the top of the stack). Inserting is called a push operation; deleting is called a pop operation. The last item inserted in a stack is the first item out of the stack; therefore, a stack is a LIFO (last-in, first-out) data structure.|
+|Queue                      |A list-like structure where inserting is performed at one end (usually called the back of the queue) and deleting is performed at the other end (usually called the front of the queue). Inserting is called an enqueue operation; deleting is called a dequeue operation. The first item inserted in a queue is the first item out of the queue; therefore, a queue is FIFO (first-in, first-out) data structure.|
+|Binary tree                |A tree-like data structure made up of nodes that store similar pieces of data. Each node has links to (up to) two children. The binary tree has a root (the top node) and leaves (nodes at the bottom with no children). From any node, a subtree can be described such that the node is the root of that subtree. |
+|Ordered binary tree        |A binary tree such that the values of all children in the left subtree of each node are less than the value of the node, and the values of all children in the right subtree of each node are greater than or equal to the value of the node. |
+|Dictionary                 |Also known as an associative array, a data structure that maps keys to values. Keys are unchangeable pieces of data; values are associated with keys (one value per key). |
