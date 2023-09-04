@@ -1,0 +1,11 @@
+{
+  "hash": "bf6e1975848d1231b83a9c17fbad4f77",
+  "result": {
+    "markdown": "---\ntitle: 03 Building a Computer\ndate: 'August 24, 2023'\ntoc: true\nnumber-sections: true\nformat:\n  html:\n    code-fold: true\n---\n\n## Introduction\n\nSo far, you have been introduced to various elementary and high level data structures: arrays, linked\nlists, stacks, queues, and binary trees. Specific to Python, you have used lists (similar to arrays) in your\nprograms. In this lesson, we will discuss some powerful functions that work with lists and introduce\nseveral new data structures.\n\n## Useful List Functions\n\nAs you have seen, Python lists are extremely useful data structures. In the first Python lesson, you were\nintroduced to several list functions that, for example, reverse a list, sort a list, etc. In this lesson, we will\ncover several more powerful built-in functions that are quite useful when used with lists.\nThe filter function returns an iterator that contains a new list consisting of only the items within an\nexisting list for which some user-defined function is true. The user-defined function can be anything\nthat evaluates an input in the existing list and returns true or false. The format for the filter function\nis as follows:\n\n```Python3\nfilter(function, mylist)\n```\n\n",
+    "supporting": [
+      "index_files"
+    ],
+    "filters": [],
+    "includes": {}
+  }
+}

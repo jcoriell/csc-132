@@ -1,0 +1,44 @@
+{
+  "index.qmd": {
+    "index.html": "6aa62b96"
+  },
+  "about.qmd": {
+    "about.html": "062d33c4"
+  },
+  "01-More-On-Data-Structures/index.qmd": {
+    "index.html": "8e98e3b4"
+  },
+  "01 More On Data Structures/index.qmd": {
+    "index.html": "d2f0a0cf"
+  },
+  "lessons/02 More On Data Structures/index.qmd": {
+    "index.html": "dfe530fb"
+  },
+  "lessons/01 More On Objects/index.qmd": {
+    "index.html": "a0a70829"
+  },
+  "lessons/03 Building a Computer/index.qmd": {
+    "index.html": "d243c1fb"
+  },
+  "lessons/02 More on Objects/index.qmd": {
+    "index.html": "d27ea072"
+  },
+  "lessons/05 Beam - Software Engineering/index.qmd": {
+    "index.html": "6ed52889"
+  },
+  "lessons/01 More on Data Structures/index.qmd": {
+    "index.html": "d6cbc776"
+  },
+  "lessons/04 Beam - Problem Solving with Computers/index.qmd": {
+    "index.html": "95a669e5"
+  },
+  "lessons/08 Beam - Git for Beginners/index.qmd": {
+    "index.html": "b0cd2aab"
+  },
+  "lessons/07 Beam - Artificial Intelligence/index.qmd": {
+    "index.html": "7767b096"
+  },
+  "lessons/06 Algorithms...Reloaded/index.qmd": {
+    "index.html": "15252caf"
+  }
+}
