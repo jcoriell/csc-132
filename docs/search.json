@@ -1,17 +1,17 @@
 [
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site"
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "The Science of Computing III",
     "section": "",
-    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites."
+    "text": "01 More on Data Structures\n02 More on Objects\n03 Building a Computer\n04 Beam - Problem Solving with Computers\n05 Beam - Software Engineering\n06 Algorithms…Reloaded\n07 Beam - Artificial Intelligence\n08 Beam - Git for Beginners"
+  },
+  {
+    "objectID": "index.html#lessons",
+    "href": "index.html#lessons",
+    "title": "The Science of Computing III",
+    "section": "",
+    "text": "01 More on Data Structures\n02 More on Objects\n03 Building a Computer\n04 Beam - Problem Solving with Computers\n05 Beam - Software Engineering\n06 Algorithms…Reloaded\n07 Beam - Artificial Intelligence\n08 Beam - Git for Beginners"
   },
   {
     "objectID": "lessons/02 More on Objects/index.html",

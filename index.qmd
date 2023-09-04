@@ -2,6 +2,21 @@
 title: "The Science of Computing III"
 ---
 
-This is a Quarto website.
+## Lessons
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+[01 More on Data Structures](/lessons/01 More on Data Structures)
+
+[02 More on Objects](/lessons/02 More on Objects)
+
+[03 Building a Computer](/lessons/03 Building a Computer)
+
+[04 Beam - Problem Solving with Computers](/lessons/04 Beam - Problem Solving with Computers)
+
+[05 Beam - Software Engineering](/lessons/05 Beam - Software Engineering)
+
+[06 Algorithms...Reloaded](/lessons/06 Algorithms...Reloaded)
+
+[07 Beam - Artificial Intelligence](/lessons/07 Beam - Artificial Intelligence)
+
+[08 Beam - Git for Beginners](/lessons/08 Beam - Git for Beginners)
+

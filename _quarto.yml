@@ -12,8 +12,20 @@ website:
         menu: 
           - text: 01 More on Data Structures
             href: lessons/01 More on Data Structures/index.qmd
-          - text: 02 More on Data Structures
+          - text: 02 More on Objects
             href: lessons/02 More on Objects/index.qmd
+          - text: 03 Building a Computer
+            href: lessons/03 Building a Computer/index.qmd
+          - text: 04 Beam - Problem Solving with Computers
+            href: lessons/04 Beam - Problem Solving with Computers/index.qmd
+          - text: 05 Beam - Software Engineering
+            href: lessons/05 Beam - Software Engineering/index.qmd
+          - text: 06 Algorithms...Reloaded
+            href: lessons/06 Algorithms...Reloaded/index.qmd
+          - text: 07 Beam - Artificial Intelligence
+            href: lessons/07 Beam - Artificial Intelligence/index.qmd
+          - text: 08 Beam - Git for Beginners
+            href: lessons/08 Beam - Git for Beginners/index.qmd
 
 format:
   html:
