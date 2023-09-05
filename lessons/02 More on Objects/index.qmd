@@ -152,7 +152,7 @@ Also, the class output magic function `__str__` also calls the matching function
 
 As a last modification, note that bicycles and motorcycles have the same number of tires. Since we can have many levels of inheritance, let's try to add a generic `Cycle` class that encapsulates the attributes shared by all kinds of *cycles* (i.e., bicycles and motorcycles). To be clear, the application now has the following class diagram:
 
-[image]
+![Class diagram of Vehicle, Car, Cycle, Bicycle, and Motorcycle](images/inheritance-1.png){width=75%}
 
 ::: {.callout-tip title="Activity"}
 Implement the `Cycle` class; then, modify the `Bicycle` and `Motorcycle` classes to inherit from the `Cycle` class.
@@ -171,13 +171,13 @@ Think of a Google map. When zoomed out to its default level, an entire city may 
 
 The object-oriented paradigm is actually emblematic of this concept. Consider the traffic simulation application that was discussed in a previous lesson. In case you have forgotten, its goal was to model vehicle traffic in a large city for the purpose of analyzing how it manages traffic during rush hour. This kind of application would be useful in learning about traffic patterns, congestion, and so on. In fact, it could help to redesign roads, entrances to and exits from highways and interstates, the placement and timing of traffic signals, etc. As discussed, such an application may include classes for cars, pickup trucks, buses, tractor trailers, motorcycles, and so on, since all of these things contribute to the traffic in the city. We initially modeled it with the following class diagram:
 
-[image]
+![Class diagram for a traffic simulatioin application](images/abstraction-1.png){width=50%}
 
 In the simulation, the way in which cars, pickup trucks, buses, motorcycles, and so on, are implemented doesn't matter to a city official using it to make zoning decisions. Those details are abstracted away from the user. As another example, the programmers tasked with extending the traffic simulation don't necessarily need to know how a bus works to, say, support school zones in the simulation.
 
 At its most basic level, the concept of an object represents a way of abstracting away data and operations into a single thing, the data being state and operations being behavior. To instantiate an object and use it in some programming context, there is no real need to know how some behavior is actually implemented, for example. Simply understanding the interface (i.e., how to invoke some sort of behavior) is enough. We just need to know what function to call, what parameters to pass it, and if we should expect a return value.
 
-::: {.callout-tip title="Modularization"}
+::: {.callout-tip title="Definition"}
 **Modularization** is the act of dividing a whole into well-defined parts that can be built and examined separately.
 :::
 
@@ -189,7 +189,7 @@ Often, abstraction and modularization go hand-in-hand. In a sense, modularizatio
 
 Let's go back to the mechanic's garage problem that was used earlier. Notice that all of the classes involved have their own `__str__` function. When we execute a statement such as `print(b1)`, which specific `__str__` function is executed?
 
-::: {.callout-tip title="Modularization"}
+::: {.callout-tip title="Definition"}
 **Method lookup** solves the problem of finding the right method to call in a class hierarchy. The idea of having multiple methods with the same name in multiple classes is called **polymorphism**.
 :::
 
@@ -288,7 +288,7 @@ Polymorphism is a powerful concept. It allows us to specify a function at a supe
 
 Let's look at an example of how this can be leveraged to produce efficient programs. Consider a scenario in which you want to write a program that can draw basic shapes (e.g., a rectangle). Such a program can be designed by creating a rectangle class that stores its length and width in instance variables, and has a draw function that produces a representation of that shape (for now, just using characters that can be found on a keyboard). A simple class diagram for this could be the following:
 
-[image]
+![Class diagram of the Rectangle class](images/polymorphism-1.png)
 
 And here's one possible method of implementing the class
 
@@ -358,7 +358,7 @@ When we want to draw a square or rectangle, we call the `draw` function. Method 
 
 Since one of the benefits of inheritance is to increase code reuse and to ease expansion and application feature enhancement, let's do precisely that by adding the ability to create and draw triangles. To simplify this, let's just consider right-angled isosceles triangles (i.e., the two sides making up the right angle are of equal length). Since triangles are shapes too, it makes sense to make them a subclass of the `Shape` class, yielding the following modified class diagram:
 
-[image]
+![Class diagram of Shape, Rectangle, Square and Triangle](images/polymorphism-2.png)
 
 Note the specification of the `draw` function in the triangle class. The shape of a triangle is different from that of a square or a rectangle, and the process of drawing that shape is therefore different. Polymorphism allows us to create another function, also called `draw`, but specifically for triangles. This overwrites the `draw` function specified in the `Shape` class, and effectively specializes the draw behavior for a triangle. This version of draw would only be executed on an object reference of the type `Triangle`.
 
@@ -444,7 +444,7 @@ the ground at some point;
 
 Remember that the higher up a function is in the inheritance hierarchy, the more classes it can be applied to. In addition, it is possible that a better result is obtained by removing or changing the version of `move` currently in the `Animal` class to another version. Note that in cases where an animal could potentially implement more than one of the given versions of `move`, assume that the animal only uses the more dominant version. For example, while an eagle could walk on two limbs, it predominantly flies through the air to move; therefore, use version (3).
 
-[image]
+![Animal class diagram](images/polymorphism-3.png)
 
 
 ## Multiple Inheritance
@@ -458,7 +458,7 @@ In the previous lesson on the object-oriented paradigm, the concept of multiple 
 
 To illustrate this again, consider the example used previously of a grocery store's items. A banana, for example, is a fruit. Therefore, it may inherit traits such as type and country of origin from a **Fruit** superclass. However, in the context of a grocery store, a banana is also an item for sale. Such a sale item may have a price, an inventory, and a shelf location, for example. Inheriting from both a **Fruit** superclass and a **SaleItem** superclass would then be useful in implementing the point-of-sale system for a grocery store. Here's a class diagram that illustrates this:
 
-[image]
+![Example of a Multiple Inheritance Class Diagram](images/multiple-inheritance-1.png)
 
 To declare a class as having more than one superclass, we simply put the names of its superclasses (each separated by a comma) in the parentheses following its class name. Here's an example with the banana class:
 

@@ -349,7 +349,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Also notice that the constructor of the <code>Vehicle</code> class (the superclass) is called in the constructor of each of the subclasses. In fact, this is the first statement in the constructors of the subclasses. That is, the initialization of a car, bicycle, and motorcycle first means to initialize a vehicle. This sets default values for the variables <code>tires</code> and <code>engine</code>. The owner of the vehicle is passed in when instantiating each of the subclasses, and is forwarded to the superclass (where the value is formally assigned). Any remaining initialization of the subclasses is done after the call to the constructor in the superclass (i.e., specific values for the variables <code>tires</code> and <code>engine</code>).</p>
 <p>Also, the class output magic function <code>__str__</code> also calls the matching function in the <code>Vehicle</code> superclass. Why? Well, it actually generates the appropriate output for any kind of vehicle (i.e., owner, number of tires, and whether or not it has an engine). The only distinguishing characteristic is the actual name of the class. Therefore, the subclasses first generate a string matching their name followed by a call to the superclass function (which generates a string containing the information specified above).</p>
 <p>As a last modification, note that bicycles and motorcycles have the same number of tires. Since we can have many levels of inheritance, let’s try to add a generic <code>Cycle</code> class that encapsulates the attributes shared by all kinds of <em>cycles</em> (i.e., bicycles and motorcycles). To be clear, the application now has the following class diagram:</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/inheritance-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption class="figure-caption">Class diagram of Vehicle, Car, Cycle, Bicycle, and Motorcycle</figcaption>
+</figure>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled" title="Activity">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -382,16 +387,21 @@ Definition
 </div>
 <p>Think of a Google map. When zoomed out to its default level, an entire city may be visible. Detailed street names, building structures, and so on, are invisible as they would clutter the map. Similarly, areas surrounding the city (e.g., state, region, country) are not visible. Zooming in reveals more detail of a part of the city; however, some of the surrounding detail that was present before is lost. Zooming out may further hide details, but bring in surrounding cities and towns. These <em>zoom levels</em> present just enough information that is required to process the map at that level.</p>
 <p>The object-oriented paradigm is actually emblematic of this concept. Consider the traffic simulation application that was discussed in a previous lesson. In case you have forgotten, its goal was to model vehicle traffic in a large city for the purpose of analyzing how it manages traffic during rush hour. This kind of application would be useful in learning about traffic patterns, congestion, and so on. In fact, it could help to redesign roads, entrances to and exits from highways and interstates, the placement and timing of traffic signals, etc. As discussed, such an application may include classes for cars, pickup trucks, buses, tractor trailers, motorcycles, and so on, since all of these things contribute to the traffic in the city. We initially modeled it with the following class diagram:</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/abstraction-1.png" class="img-fluid figure-img" style="width:50.0%"></p>
+<figcaption class="figure-caption">Class diagram for a traffic simulatioin application</figcaption>
+</figure>
+</div>
 <p>In the simulation, the way in which cars, pickup trucks, buses, motorcycles, and so on, are implemented doesn’t matter to a city official using it to make zoning decisions. Those details are abstracted away from the user. As another example, the programmers tasked with extending the traffic simulation don’t necessarily need to know how a bus works to, say, support school zones in the simulation.</p>
 <p>At its most basic level, the concept of an object represents a way of abstracting away data and operations into a single thing, the data being state and operations being behavior. To instantiate an object and use it in some programming context, there is no real need to know how some behavior is actually implemented, for example. Simply understanding the interface (i.e., how to invoke some sort of behavior) is enough. We just need to know what function to call, what parameters to pass it, and if we should expect a return value.</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Modularization">
+<div class="callout callout-style-default callout-tip callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Modularization
+Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -404,13 +414,13 @@ Modularization
 <section id="polymorphism" class="level2">
 <h2 class="anchored" data-anchor-id="polymorphism">Polymorphism</h2>
 <p>Let’s go back to the mechanic’s garage problem that was used earlier. Notice that all of the classes involved have their own <code>__str__</code> function. When we execute a statement such as <code>print(b1)</code>, which specific <code>__str__</code> function is executed?</p>
-<div class="callout callout-style-default callout-tip callout-titled" title="Modularization">
+<div class="callout callout-style-default callout-tip callout-titled" title="Definition">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Modularization
+Definition
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -499,7 +509,12 @@ Activity
 <p>Method lookup is essentially a simple concept. If a specified function is not found in a class, then a search for the matching function is performed in the superclass. In fact, method lookup works by continuously trying to find a matching function in the superclass hierarchy until one is found. If one is not found, then an error occurs.</p>
 <p>Polymorphism is a powerful concept. It allows us to specify a function at a superclass level (including any desired implementation), and then to overwrite it at lower levels of the class hierarchy (i.e., in subclasses). Consider this a way to specialize or refine behaviors defined in superclasses.</p>
 <p>Let’s look at an example of how this can be leveraged to produce efficient programs. Consider a scenario in which you want to write a program that can draw basic shapes (e.g., a rectangle). Such a program can be designed by creating a rectangle class that stores its length and width in instance variables, and has a draw function that produces a representation of that shape (for now, just using characters that can be found on a keyboard). A simple class diagram for this could be the following:</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/polymorphism-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Class diagram of the Rectangle class</figcaption>
+</figure>
+</div>
 <p>And here’s one possible method of implementing the class</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Rectangle:</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -552,7 +567,12 @@ Activity
 <p>The <code>Square</code> and <code>Rectangle</code> classes are subclasses of the <code>Shape</code> class. Note that they have no instance variables or functions unique to them. That is, they inherit everything from their superclass. The only difference between the two is that the constructor of the <code>Square</code> class takes only one argument, while the constructor of the <code>Rectangle</code> class takes two arguments. Within their individual implementations, they both call the constructor of the <code>Shape</code> class.</p>
 <p>When we want to draw a square or rectangle, we call the <code>draw</code> function. Method lookup makes it easy to see that the <code>draw</code> function in the <code>Shape</code> class will be executed. Why? Because the <code>Square</code> and <code>Rectangle</code> classes don’t have a <code>draw</code> function of their own, but their superclass (the <code>Shape</code> class) does.</p>
 <p>Since one of the benefits of inheritance is to increase code reuse and to ease expansion and application feature enhancement, let’s do precisely that by adding the ability to create and draw triangles. To simplify this, let’s just consider right-angled isosceles triangles (i.e., the two sides making up the right angle are of equal length). Since triangles are shapes too, it makes sense to make them a subclass of the <code>Shape</code> class, yielding the following modified class diagram:</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/polymorphism-2.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Class diagram of Shape, Rectangle, Square and Triangle</figcaption>
+</figure>
+</div>
 <p>Note the specification of the <code>draw</code> function in the triangle class. The shape of a triangle is different from that of a square or a rectangle, and the process of drawing that shape is therefore different. Polymorphism allows us to create another function, also called <code>draw</code>, but specifically for triangles. This overwrites the <code>draw</code> function specified in the <code>Shape</code> class, and effectively specializes the draw behavior for a triangle. This version of draw would only be executed on an object reference of the type <code>Triangle</code>.</p>
 <p>Here is the new <code>Triangle</code> class, along with an updated main part of the program (note that the rest of the program that defines the other classes remains unchanged):</p>
 <div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Triangle(Shape):</span>
@@ -614,7 +634,12 @@ Activity
 <li><p>Move in a given direction by slithering on the ground.</p></li>
 </ol>
 <p>Remember that the higher up a function is in the inheritance hierarchy, the more classes it can be applied to. In addition, it is possible that a better result is obtained by removing or changing the version of <code>move</code> currently in the <code>Animal</code> class to another version. Note that in cases where an animal could potentially implement more than one of the given versions of <code>move</code>, assume that the animal only uses the more dominant version. For example, while an eagle could walk on two limbs, it predominantly flies through the air to move; therefore, use version (3).</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/polymorphism-3.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Animal class diagram</figcaption>
+</figure>
+</div>
 </section>
 </section>
 <section id="multiple-inheritance" class="level2">
@@ -634,7 +659,12 @@ Defintion
 </div>
 </div>
 <p>To illustrate this again, consider the example used previously of a grocery store’s items. A banana, for example, is a fruit. Therefore, it may inherit traits such as type and country of origin from a <strong>Fruit</strong> superclass. However, in the context of a grocery store, a banana is also an item for sale. Such a sale item may have a price, an inventory, and a shelf location, for example. Inheriting from both a <strong>Fruit</strong> superclass and a <strong>SaleItem</strong> superclass would then be useful in implementing the point-of-sale system for a grocery store. Here’s a class diagram that illustrates this:</p>
-<p>[image]</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/multiple-inheritance-1.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Example of a Multiple Inheritance Class Diagram</figcaption>
+</figure>
+</div>
 <p>To declare a class as having more than one superclass, we simply put the names of its superclasses (each separated by a comma) in the parentheses following its class name. Here’s an example with the banana class:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Banana(Fruit, SaleItem):</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
