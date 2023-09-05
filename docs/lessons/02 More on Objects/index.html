@@ -181,6 +181,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#acivity-zooland" id="toc-acivity-zooland" class="nav-link" data-scroll-target="#acivity-zooland">Acivity: Zooland</a></li>
   </ul></li>
   <li><a href="#multiple-inheritance" id="toc-multiple-inheritance" class="nav-link" data-scroll-target="#multiple-inheritance">Multiple Inheritance</a></li>
+  <li><a href="#abstract-methods" id="toc-abstract-methods" class="nav-link" data-scroll-target="#abstract-methods">Abstract Methods</a></li>
+  <li><a href="#abstract-classes" id="toc-abstract-classes" class="nav-link" data-scroll-target="#abstract-classes">Abstract Classes</a></li>
+  <li><a href="#coupling-and-cohesion" id="toc-coupling-and-cohesion" class="nav-link" data-scroll-target="#coupling-and-cohesion">Coupling and Cohesion</a></li>
   </ul>
 </nav>
     </div>
@@ -616,6 +619,267 @@ Activity
 </section>
 <section id="multiple-inheritance" class="level2">
 <h2 class="anchored" data-anchor-id="multiple-inheritance">Multiple Inheritance</h2>
+<p>In the previous lesson on the object-oriented paradigm, the concept of multiple inheritance (and how it differs from single inheritance) was briefly discussed. In this lesson, we have only looked at cases where a class only inherits traits from a single superclass. Most programming languages only support single inheritance; however, there are cases where it would be advantageous to support inheriting traits from more than one superclass.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Defintion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Defintion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Single inheritance</strong> is when a class inherits traits from a single superclass. <strong>Multiple inheritance</strong> is when a class inherits traits from two or more superclasses. Some languages only support single inheritance while others (such as Python) support multiple inheritance.</p>
+</div>
+</div>
+<p>To illustrate this again, consider the example used previously of a grocery store’s items. A banana, for example, is a fruit. Therefore, it may inherit traits such as type and country of origin from a <strong>Fruit</strong> superclass. However, in the context of a grocery store, a banana is also an item for sale. Such a sale item may have a price, an inventory, and a shelf location, for example. Inheriting from both a <strong>Fruit</strong> superclass and a <strong>SaleItem</strong> superclass would then be useful in implementing the point-of-sale system for a grocery store. Here’s a class diagram that illustrates this:</p>
+<p>[image]</p>
+<p>To declare a class as having more than one superclass, we simply put the names of its superclasses (each separated by a comma) in the parentheses following its class name. Here’s an example with the banana class:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Banana(Fruit, SaleItem):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    ...</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Method lookup in the context of multiple inheritance raises an interesting question: which function is called if more than one superclass has a function with the same name? For example, the <code>Banana</code> class does not have the <code>__str__</code> function as shown in the class diagram; however, both the Fruit and <code>SaleItem</code> classes do. So which of the two <code>__str__</code> functions is executed supposing some print statement on an object reference of the <code>Banana</code> class is executed?</p>
+<p>Since the <code>Banana</code> class has no <code>__str__</code> function, then the normal behavior is to find the matching function in the superclass. However, the banana class has two superclasses. With multiple inheritance, method lookup is carried out in the order in which the superclasses are listed in the class arguments. In the <code>Banana</code> class header shown above, for example, the matching function would first be searched for in the <code>Fruit</code> class since it is the first superclass listed. If found (which it clearly is), it is executed; if not, then the matching function would be searched for in the <code>SaleItem</code> class. If found, it would be executed; if not, an error would occur (since the method would never have been found).</p>
+</section>
+<section id="abstract-methods" class="level2">
+<h2 class="anchored" data-anchor-id="abstract-methods">Abstract Methods</h2>
+<p>One of the benefits of the object-oriented paradigm in programming is that it easily allows for more than one programmer to be involved in the implementation of a system. The implementation is often divided according to classes (e.g., one team of programmers works on one class while another team deals with another class). In these cases, it is important to include measures that allow any programmer to know the expectations of each class. One of the measures that helps with this is the idea of abstract methods.</p>
+<p>Consider the animal hierarchy that was discussed earlier in this lesson. Suppose that one team was tasked with the design of the <code>Animal</code> class, and another with the design of various classes at the bottom of the hierarchy. Generally, it is good programming practice to put the members that all (or many of) the classes will use higher up in the hierarchy. Suppose that the project required a function to represent the way animals communicate (i.e., sound and motion cues). We know that all animals communicate in one way or another; however, there is no general way that applies to the majority of the animals. In this scenario, it is beneficial to use an abstract method.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Defintion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Defintion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>An <strong>abstract method</strong> in a class is a way of promising that any subclasses of some superclass will provide implementation details for that method.</p>
+</div>
+</div>
+<p>In the communication example above, the <code>Animal</code> class has no general way of implementing some sort of communicate function. Since all animals communicate, it is imperative that all subclasses provide an explicit implementation for the communicate function.</p>
+<p>In Python, a method in a class is made abstract by providing a single statement that generates an error noting that a subclass has not implemented the abstract method. In Python (as in many other object- oriented programming languages), errors can be <em>raised</em> or <em>thrown</em> to alert the user of some sort of problem. In Java, for example, errors (actually called exceptions) are thrown. In Python, errors are raised. This will be discussed thoroughly in a future lesson. For now, it is sufficient to note that abstract methods can raise an error known as a <code>NotImplementedError</code>. Should a subclass not implement a function defined as abstract in the superclass, and an object reference of the subclass tries to call it, the error will be raised. This terminates the program.</p>
+<p>Here is an example of a simple <code>Animal</code> class (with the abstract method communicate) and a <code>Bird</code> subclass. The <code>Bird</code> subclass does not implement the abstract method in this example:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Animal """</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Abstract method communicate not implemented in subclass!"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bird(Animal):</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Bird """</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Bird()</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>b.communicate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The functions above simply have comments instead of any actual implementation; however, they can still be used to understand the concept. The <code>Animal</code> class has a constructor and an abstract function called <code>communicate</code>. Making that function abstract is a way of enforcing that all subclasses have an actual implementation of it (instead of, for example, hoping that whoever is working on that class remembers to implement it). Note the only statement in the function:</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Abstract method..."</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The Bird class has not implemented the communicate function in this example. Therefore, the statement b.communicate() causes a <code>NotImplementedError</code> to be raised:</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    File "...\02 More on Objects\code\abstract1.py", line 14, in &lt;module&gt;</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        b.communicate()</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    File "...\02 More on Objects\code\abstract1.py", line 7, in communicate</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        raise NotImplementedError("Abstract method communicate not implemented in subclass!")</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    NotImplementedError: Abstract method communicate not implemented in subclass!</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>But why is the error raised? It all comes down to method lookup. Since the function is not defined in the <code>Bird</code> subclass, then it is searched for in its superclass (i.e., the <code>Animal</code> class). Of course, it is found there; however, it only contains the statement that raises the error. And so the error is raised!</p>
+<p>To show that actually implementing the communicate function in the Bird class works, here’s a modification of the above program:</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal:</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Animal """</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>        <span class="cf">raise</span> <span class="pp">NotImplementedError</span>(<span class="st">"Abstract method communicate not implemented in subclass!"</span>)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bird(Animal):</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Bird """</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How a bird communicates """</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"A Bird communicates!"</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Bird()</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>b.communicate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output of the program is the single line:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>     A Bird communicates!</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note the comments in the constructors of the <code>Animal</code> and <code>Bird</code> classes. These functions have no actual code. You may be wondering why Python doesn’t generate the error: <code>IndentationError: expected an indented block</code>. Recall that using the keyword <code>pass</code> is an easy way of stubbing out functions whose details will be provided at a later time. Python considers comments specified with three quotes (single or double) to be a valid statement. Therefore, another way to stub out a function (without using the keyword <code>pass</code>) is to provide such a comment.</p>
+<p>Another way of implementing an abstract method is by making use of the <strong>Abstract Base Class</strong> (abc) library that is packaged with Python. When imported, a method can be marked as abstract in the same way that one can be marked as an accessor or mutator. The difference is the decorator used to mark the function: <code>@abc.abstractmethod</code>. This method ensures that a <code>TypeError</code> will be raised immediately upon the instantiation of a subclass if the abstract method is not implemented in the subclass. Note that the following statement must be placed at the top of the class (i.e., after the class signature) in order for this method to work:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(metaclass <span class="op">=</span> abc.ABCMeta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Here’s an example of a modified <code>Animal</code> class that implements this way of including abstract methods:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abc</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(metaclass <span class="op">=</span> abc.ABCMeta):</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Animal """</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abc.abstractmethod</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bird(Animal):</span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Bird """</span></span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Bird()</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>b.communicate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note the differences. First, the <code>abc</code> library is imported. Second, the <code>communicate</code> method is marked as abstract via <code>@abc.abstractmethod</code>. Third, the class has the following statement with its signature:</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(metaclass <span class="op">=</span> abc.ABCMeta)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>When the variable <code>b</code> is instantiated as a new object of the <code>Bird</code> class, the following error occurs:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    File "...\02 More on Objects\code\abstract3.py", line 17, in&lt;module&gt;</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>         b = Bird()</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    TypeError: Can't instantiate abstract class Bird with abstract methods communicate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To show that actually implementing the abstract method in the <code>Bird</code> subclass works with this way of including abstract methods, here is working source code:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abc</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(metaclass <span class="op">=</span> abc.ABCMeta):</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Animal """</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abc.abstractmethod</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bird(Animal):</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Bird """</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"A Bird communicates!"</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> Bird()</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a>b.communicate()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The output of the program is the single line:</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>A Bird communicates!</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In standard practice, the first method is usually preferred. The main reason for this is that the second is not particularly <em>Pythonic</em>. Python prides itself in being dynamic and obvious. That is, it is quite readable that the <code>communicate</code> method defined in the <code>Animal</code> class must be implemented in the <code>Bird</code> subclass because it raises an error if it is called. On the other hand, the first method requires the unimplemented function to actually be called by an object reference of the first class before an error is raised. The second method immediately raises an error when an object of the subclass that doesn’t implement the abstract method is instantiated. So in the end, take your pick.</p>
+</section>
+<section id="abstract-classes" class="level2">
+<h2 class="anchored" data-anchor-id="abstract-classes">Abstract Classes</h2>
+<p>Recall the Zooland activity discussed earlier. Although the <code>Animal</code> class exists and can be instantiated, what kind of animal would such an instance imply? That is, what kind of animal would it be? In fact, it could be any animal. The intended behavior is most likely to only allow the creation of instances of the various animals at the bottom of the hierarchy. For example, instantiating an <code>Ostrich</code>, <code>Dolphin</code>, and <code>Wolf</code> should be allowed. However, instantiating a <code>Bird</code>, <code>Mammal</code>, or <code>Terrestrial</code> (<code>Mammal</code>) should not since they aren’t specific enough and really describe groups or types of animals.</p>
+<p>Instantiating any class in the hierarchy can create confusion because it could potentially allow instances of objects that were not planned in the design. We can restrict the instantiation of the <code>Animal</code> class, for example, by making it abstract. That way, no one can just instantiate an <code>Animal</code> object.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Defintion">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Defintion
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Abstract classes</strong> are classes designed solely to be used as superclasses and never to be instantiated.</p>
+</div>
+</div>
+<p>Ensuring that the subclasses of abstract classes are not abstract means that they can be instantiated.</p>
+<p>In Python, the only way to make a class abstract is to use the Abstract Base Class method discussed above. To prevent the class from actually being instantiated, at least one of its methods must be made abstract. The following <code>Animal</code> class, for example, cannot be instantiated because its communicate method is abstract:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> abc</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Animal(metaclass <span class="op">=</span> abc.ABCMeta):</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Animal """</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">@abc.abstractmethod</span></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> Bird(Animal):</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" Constructs a new Bird """</span></span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> communicate(<span class="va">self</span>):</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>        <span class="co">""" How an animal communicates """</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">"A Bird communicates!"</span>)</span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> Animal()         </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that the program above is the same as before, except that the main part of the program has been changed to attempt to declare an instance of the <code>Animal</code> class. Here’s the output:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Traceback (most recent call last):</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>    File "...\lessons\02 More on Objects\code\abstract5.py", line 21, in &lt;module&gt;</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>        a = Animal()</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>    TypeError: Can't instantiate abstract class Animal with abstract methods communicate</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Make sure that you understand that using the <code>abc</code> library to implement abstract methods means that the entire class is also abstract. However, it is the only way to actually make an entire class abstract. So which method should you choose? If you want to make entire classes abstract, then you must use the second method (i.e., using the <code>abc</code> library). If you just want to make one or more functions in a class abstract but not the entire class, then use the first method.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Did you know?">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Did you know?
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>As discussed above, abstract classes cannot be instantiated, and are instead only used as superclasses to define state and behavior that can be inherited by subclasses. <strong>Concrete classes</strong> are those classes that can be instantiated.</p>
+</div>
+</div>
+</section>
+<section id="coupling-and-cohesion" class="level2">
+<h2 class="anchored" data-anchor-id="coupling-and-cohesion">Coupling and Cohesion</h2>
+<p>So far in this lesson, the concepts that have been discussed all help in designing code. In particular, you may have noticed that they help reason about and design large projects involving many programmers. The kinds of projects that you will likely work on in an educational setting are usually small in comparison to the kinds of projects that professionals work on in industry. These large projects require careful consideration when designing them, programming them, and later testing them, so that they are manageable and ultimately produce a solution that solves some original problem.</p>
+<p>The rest of this lesson will focus on a few more topics that help address the design of applications. The first looks at the connections between separate units of a program.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>A <strong>unit</strong> is any reasonably self-contained component of a program.</p>
+</div>
+</div>
+<p>For example, a class can be considered a unit. But at another level of abstraction, so can a function. In fact, the function can be considered as zooming in on a class. Zooming out of a class may reveal several classes, all contained within some library. The library can also be considered a unit, just at another level of abstraction.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Coupling</strong> refers to links between the separate units of a program.</p>
+</div>
+</div>
+<p>If two classes depend closely on one another, we say that they are <strong>tightly coupled</strong>. Similarly, if two methods depend closely on one another, they are tightly coupled. Two units that do not depend closely on one another are <strong>loosely coupled</strong>. When designing applications, we aim for loosely coupled units, or generally just loose coupling. Why? Because it makes it possible to understand one unit without having to understand others. In the end, it just makes things simpler. For example, we can change one class with little to no effect on other classes. This increases maintainability. We try to avoid tight coupling, because changes to a unit that is tightly coupled with one or more other units can cascade and result in a chain of additional changes to the other units.</p>
+<div class="callout callout-style-default callout-tip callout-titled" title="Definition">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Definition
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Cohesion</strong> refers to the number and diversity of tasks that a single unit is responsible for.</p>
+</div>
+</div>
+<p>If a unit is responsible for a single task, we say that it has <strong>high cohesion</strong>. If a unit is responsible for many tasks, we say that it has <strong>low cohesion</strong>. When designing applications, we aim for high cohesion. The more simple and lean a unit is, the easier it is to understand what it does. It’s just that much easier to reason about and maintain.</p>
+<p>Generally, applications that are highly cohesive often make it easy to reuse units in order to reduce code duplication. Low cohesion implies that units perform multiple tasks and have no clear identity. So what does this mean specifically in terms of application design? At the class level: classes should represent one single, well defined entity; and at the function level: a function should be responsible for one well defined task.</p>
+<p>Designing applications with loose coupling and high cohesion helps with localizing change. When change is needed, as few units as possible should be affected. In fact, we can use the concepts of coupling and cohesion to answer the questions, “How long should a class be?” and “How long should a function be?” Simply put, a function is too long if it does more than one logical task, and a class is too complex if it represents more than one logical entity. Of course, these are guidelines; the real world is often a bit more complicated.</p>
 
 
 </section>
